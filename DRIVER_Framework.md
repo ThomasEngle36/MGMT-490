@@ -1,10 +1,11 @@
 # Building with the DRIVER Framework
 
-This project was developed adhering to the **DRIVER** methodology. DRIVER is an iterative, structured approach to building software applications that ensures each phase—from conceptualization to final reflection—is clearly defined and executable. 
+This project was developed adhering to the **DRIVER** methodology, utilizing the **FAskills Plugin** and **Gemini AI** as collaborative coding assistants. DRIVER is an iterative, structured approach to building software applications that ensures each phase—from conceptualization to final reflection—is clearly defined and executable. 
 
-By following this framework, the DCF Generator project maintained a tight scope, robust testing, and clear documentation. Below is an outline of how each phase of the framework was applied to this specific tool:
+By utilizing these collaborative AI tools while following this framework, the DCF Generator project maintained a tight scope, robust testing, and clear documentation. Below is an outline of how each phase of the framework was applied to this specific tool:
 
-## 1. Define (Scope & Requirements)
+
+## 1. Define (`/driver:define`)
 *   **The Problem:** Traditional Excel-based DCF models are manual, prone to data-entry errors, and time-consuming to update when market conditions change.
 *   **The Solution:** An automated web application that programmatically fetches financial data and dynamically runs intrinsic valuations.
 *   **Key Requirements:** 
@@ -25,11 +26,11 @@ By following this framework, the DCF Generator project maintained a tight scope,
 *   **Accuracy Checks:** Tested the application using real-world public companies, specifically focusing on a base case scenario for a mature company like Walmart ($WMT). 
 *   **Sanity Checks:** Verified that the core equations structurally matched traditional financial models, ensuring that an increase in the discount rate accurately decreased the implied stock price, and vice versa.
 
-## 5. Evolve (Iterative Enhancement)
+## 5. Evolve (`/driver:evolve`)
 *   **Expanding Functionality:** Based on the successful base model, the project was expanded to include a sophisticated 2D Sensitivity Analysis heatmap. 
 *   **Deeper Insights:** This evolution moved the tool from a simple static calculator into a dynamic environment where users can simultaneously test various Terminal Growth Rates against different WACC scenarios.
 
-## 6. Reflect (Documentation & Delivery)
+## 6. Reflect (`/driver:reflect`)
 *   **Presentation:** Authored a comprehensive video script tailored to presenting the DCF methodology, defending WACC assumptions, and explaining the sensitivity outputs.
 *   **Publishing:** Drafted a cohesive Substack post to introduce the tool's mechanics and the value of automating intrinsic valuations.
 *   **Transparency:** Clearly documented the role of AI coding assistants throughout the development process, adhering to modern software and academic disclosure standards.
