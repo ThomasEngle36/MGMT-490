@@ -1,47 +1,73 @@
-# Corporate Valuation Application (MGMT 490)
+# Integrated Finance Capstone (MGMT 490)
 
-## Project Description
-This is a Streamlit application designed for performing Discounted Cash Flow (DCF) valuations dynamically using real-time financial data. It allows analysts to stress-test their assumptions including Cost of Capital (WACC), Short-Term Growth Rates, and Terminal Growth Rates.
+## Project Overview
+This capstone combines:
+- **Project 1 (Valuation):** DCF model with adjustable WACC, short-term growth, and terminal growth.
+- **Project 2 (Portfolio Optimizer):** constrained portfolio optimization with Max Sharpe, Min Variance, and Target Return objectives.
+- **Additional Component (New):** momentum + volatility regime adjustment that modifies expected returns before optimization.
 
-## Project Goals
-- **Automate Valuation Mechanics:** Eliminate the repetitive data-gathering and calculation processes inherent to traditional Excel DCF models.
-- **Dynamic Stress-Testing:** Provide an interactive tool (via a 2D Heatmap) for stress-testing intrinsic valuations under various economic scenarios.
-- **Apply Financial Theory in Code:** Demonstrate proficiency in building robust financial applications using Python, Streamlit, and modern structured development frameworks.
+The app is implemented in `capstone_app.py` and demonstrates **cross-component sensitivity** from valuation assumptions to final portfolio allocation.
 
-## Features:
-1. **Dynamic Data Fetching**: Utilizes `yfinance` to automatically pull Current Stock Price, Shares Outstanding, Operating Cash Flow, Capex, Total Debt, and Cash.
-2. **DCF Engine**: Projects 5-year Free Cash Flows and calculates the Terminal Value using the Gordon Growth Model.
-3. **Valuation Outputs**: Calculates and explicitly displays Enterprise Value, Equity Value, and an Implied Per-Share Value.
-4. **Sensitivity Analysis**: Generates an interactive heatmap demonstrating how implied share prices react to changes in WACC and Terminal Growth Rate assumptions.
+## Integrated Workflow
+1. **Universe Input:** enter 5-15 tickers.
+2. **Valuation Engine:** run DCF per ticker and compute implied mispricing.
+3. **Valuation Screen:** keep only stocks above a user-defined undervaluation threshold.
+4. **Additional Module:** adjust expected returns using valuation signal weight, momentum signal weight, and volatility penalty weight.
+5. **Optimization:** optimize the screened universe under user-selected constraints.
+6. **Ripple Sensitivity:** optional side-by-side scenario run that shifts WACC and traces impact to screening and final weights.
 
-## Phase 1 Readiness:
-- ✅ Uses `yfinance` to accept a ticker and pull real-time financial data.
-- ✅ DCF Engine projecting cash flows.
-- ✅ Dynamic inputs for WACC, Short-term Growth Rate, Terminal Growth Rate.
-- ✅ Output of Enterprise Value, Equity Value, and Per-Share Value.
-- ✅ Interactive 2D Heatmap for Sensitivity Analysis (WACC vs. Term Growth).
-- ✅ Built to handle stability (edge-case checks for missing metrics or negative base Free Cash Flows).
+## Adjustable Inputs
+### Valuation Inputs
+- WACC
+- Short-term growth (5-year)
+- Terminal growth
+- Minimum undervaluation threshold
 
-## Getting Started
+### Additional Component Inputs
+- Valuation signal weight
+- Momentum signal weight
+- Momentum window
+- Volatility penalty weight
 
-1. Ensure you have Python installed.
-2. Clone this repository (or download the files).
-3. Install the required dependencies using pip:
+### Portfolio Inputs
+- Price history period and interval
+- Risk-free rate
+- Min/max weight constraints
+- Objective (Max Sharpe, Min Variance, Target Return)
+- Target return (when applicable)
+
+### Cross-Component Sensitivity Inputs
+- Toggle automatic ripple comparison
+- Scenario WACC shift (bps)
+
+## Why the Components Connect
+- Valuation output (`Mispricing %`) becomes an explicit input to expected return adjustment.
+- The adjusted expected returns feed the optimizer objective.
+- Changing WACC or growth changes valuation, which changes screen pass/fail, which changes the optimizer universe and final allocations.
+
+## How to Run
+1. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the Streamlit application:
+2. Start the integrated app:
    ```bash
-   streamlit run app.py
+   streamlit run capstone_app.py
    ```
 
-## Data Sources
-This application pulls all fundamental financial data dynamically using the open-source `yfinance` library. **No private API keys are required or included in this repository.** Anyone can clone this project, install the requirements, and run the application out of the box using public Yahoo Finance data.
+## Suggested Demo Flow (Capstone Video)
+1. Run base case with 8-10 tickers.
+2. Show valuation table and which stocks pass the screen.
+3. Show adjusted-return diagnostic table (new component).
+4. Show optimized weights and frontier.
+5. Turn on ripple comparison and change WACC shift.
+6. Explain added/removed tickers and weight changes.
+
+## Limitations
+- Yahoo Finance data can have missing/lagged fields.
+- DCF is assumption-sensitive, especially terminal value inputs.
+- Momentum and volatility adjustments are heuristic and not a full asset-pricing model.
+- Errors can compound across stages in a multi-step pipeline.
 
 ## AI Usage Disclosure and Reflection
-This project was built with the assistance of AI tools, specifically Google DeepMind's Gemini and the FAskills DRIVER AI framework plugin.
-- **Usage:** Specifically, AI was utilized to help structure the base Python logic, troubleshoot data manipulation utilizing `pandas` and `streamlit`, and format the frontend user interface. 
-- **Reflection:** The core financial modeling theory, the selection of the DCF methodology, and the fundamental assumptions utilized during the valuation analysis (such as projecting WMT's WACC and Growth rate) were guided entirely by my own analytical research. Utilizing AI significantly reduced the friction of translating financial concepts into working code, allowing me to focus more deeply on the actual valuation mechanics and sensitivity outcomes rather than getting bogged down by syntax errors.
-
-## Author
-Prepared for MGMT 490 Corporate Valuation Project.
+AI tools were used to accelerate implementation, refactoring, and documentation. Financial framing, integration choices, parameter interpretation, and capstone workflow design were directed by the student and project rubric requirements.

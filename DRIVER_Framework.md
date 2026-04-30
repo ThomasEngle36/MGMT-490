@@ -1,36 +1,52 @@
-# Building with the DRIVER Framework
+# Building the Capstone with the DRIVER Framework
 
-This project was developed adhering to the **DRIVER** methodology, utilizing the **FAskills Plugin** and **Gemini AI** as collaborative coding assistants. DRIVER is an iterative, structured approach to building software applications that ensures each phase—from conceptualization to final reflection—is clearly defined and executable. 
-
-By utilizing these collaborative AI tools while following this framework, the DCF Generator project maintained a tight scope, robust testing, and clear documentation. Below is an outline of how each phase of the framework was applied to this specific tool:
-
+This capstone was built using an iterative DRIVER workflow to integrate valuation + portfolio optimization + a third analytical module into one end-to-end system.
 
 ## 1. Define (`/driver:define`)
-*   **The Problem:** Traditional Excel-based DCF models are manual, prone to data-entry errors, and time-consuming to update when market conditions change.
-*   **The Solution:** An automated web application that programmatically fetches financial data and dynamically runs intrinsic valuations.
-*   **Key Requirements:** 
-    *   Dynamic data fetching via financial APIs (`yfinance`).
-    *   Flexibility to alter assumptions (WACC, Growth Rates).
-    *   A user-friendly UI to instantly display valuations.
+- **Problem:** Standalone valuation and standalone optimization do not show how assumption changes propagate across a full investment workflow.
+- **Solution:** Build one integrated application where valuation outputs feed portfolio construction and users can observe downstream effects.
+- **Capstone Requirements Mapped:**
+  - Adjustable valuation inputs
+  - Adjustable optimization inputs
+  - Integrated data flow between components
+  - Cross-component sensitivity demonstration
+  - One additional student-designed component
 
-## 2. Represent (Architecture & Logic)
-*   **Data Models:** Outlined the required inputs from the income statement, balance sheet, and cash flow statement (e.g., Operating Cash Flow, Capex, Total Debt, Cash & Equivalents, Shares Outstanding).
-*   **Mathematical Models:** Formally defined the Python implementation for the core DCF equations, including the accurate projection of 5-year Free Cash Flows and the calculation of the Perpetuity Terminal Value.
-*   **UI Layout:** Sketched the structure of the Streamlit dashboard to ensure outputs like Enterprise Value, Equity Value, and the Per-Share Implied Value were displayed clearly alongside sensitivity metrics.
+## 2. Represent (Architecture & Data Flow)
+Pipeline architecture:
+1. Input ticker universe
+2. Per-ticker DCF valuation
+3. Undervaluation screening
+4. Additional module adjusts expected returns using momentum and volatility regime penalties
+5. Portfolio optimization under constraints
+6. Scenario rerun for ripple analysis
 
-## 3. Implement (Coding the Engine & UI)
-*   **Backend Engine:** Developed the core Python logic to ingest current ticker data, map financial metrics to the DCF formulas, and handle edge cases (e.g., negative base free cash flows or missing API data).
-*   **Frontend Integration:** Integrated the engine with Streamlit to create an interactive, responsive web application where users can input dynamic sliders for short-term growth and discount rates.
+## 3. Implement
+- Implemented integrated Streamlit app in `capstone_app.py`.
+- Reused core methods from both prior projects:
+  - DCF valuation mechanics from Project 1
+  - SLSQP optimization mechanics from Project 2
+- Added new adjustable component:
+  - valuation signal weight
+  - momentum signal weight
+  - momentum window
+  - volatility penalty weight
 
-## 4. Validate (Stress-Testing)
-*   **Accuracy Checks:** Tested the application using real-world public companies, specifically focusing on a base case scenario for a mature company like Walmart ($WMT). 
-*   **Sanity Checks:** Verified that the core equations structurally matched traditional financial models, ensuring that an increase in the discount rate accurately decreased the implied stock price, and vice versa.
+## 4. Validate
+Validation checks included:
+- Input constraints (5-15 tickers, min weight <= max weight)
+- Error handling for missing fundamentals and price history
+- Optimization infeasibility handling via custom exception
+- Cross-component sanity check by rerunning pipeline under shifted WACC
 
 ## 5. Evolve (`/driver:evolve`)
-*   **Expanding Functionality:** Based on the successful base model, the project was expanded to include a sophisticated 2D Sensitivity Analysis heatmap. 
-*   **Deeper Insights:** This evolution moved the tool from a simple static calculator into a dynamic environment where users can simultaneously test various Terminal Growth Rates against different WACC scenarios.
+System evolved from two separate project apps into one pipeline that:
+- traces assumptions from valuation to optimizer outputs,
+- makes integration visible with intermediate tables,
+- includes side-by-side scenario outputs for stronger explanation quality.
 
 ## 6. Reflect (`/driver:reflect`)
-*   **Presentation:** Authored a comprehensive video script tailored to presenting the DCF methodology, defending WACC assumptions, and explaining the sensitivity outputs.
-*   **Publishing:** Drafted a cohesive Substack post to introduce the tool's mechanics and the value of automating intrinsic valuations.
-*   **Transparency:** Clearly documented the role of AI coding assistants throughout the development process, adhering to modern software and academic disclosure standards.
+- **What worked:** modular pipeline design made integration explainable for presentation.
+- **Tradeoffs:** DCF and historical-return estimates can both be unstable in stressed markets.
+- **Professional use case:** practical screening and scenario-analysis assistant, not a fully automated investment decision engine.
+- **AI disclosure:** AI was used for coding acceleration, debugging support, and documentation drafting; project framing and financial interpretation remained student-led.
